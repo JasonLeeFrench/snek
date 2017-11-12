@@ -9048,10 +9048,10 @@ var player = new _Player2.default({
   x: 10, y: 10
 });
 
-var _generateTreatPositio = (0, _utils.generateTreatPositions)(_config.TILE_COUNT),
-    _generateTreatPositio2 = _slicedToArray(_generateTreatPositio, 2),
-    treatX = _generateTreatPositio2[0],
-    treatY = _generateTreatPositio2[1];
+var _getFreeCoord = (0, _utils.getFreeCoord)(player.trail, _config.TILE_COUNT),
+    _getFreeCoord2 = _slicedToArray(_getFreeCoord, 2),
+    treatX = _getFreeCoord2[0],
+    treatY = _getFreeCoord2[1];
 
 var treat = new _Treat2.default({
   ctx: ctx, x: treatX, y: treatY
@@ -9117,7 +9117,7 @@ var Game = function () {
 
       var colliding = (0, _utils.isColliding)(player, treat);
       return this.elements.map(function (element) {
-        return element.update(colliding);
+        return element.update(colliding, player);
       });
     }
   }, {
@@ -9253,15 +9253,15 @@ var Treat = function () {
 
   _createClass(Treat, [{
     key: 'update',
-    value: function update(isHit) {
+    value: function update(isHit, player) {
       if (isHit) {
         // new snack!
-        var _generateTreatPositio = (0, _utils.generateTreatPositions)(_config.TILE_COUNT);
+        var _getFreeCoord = (0, _utils.getFreeCoord)(player.trail, _config.TILE_COUNT);
 
-        var _generateTreatPositio2 = _slicedToArray(_generateTreatPositio, 2);
+        var _getFreeCoord2 = _slicedToArray(_getFreeCoord, 2);
 
-        this.x = _generateTreatPositio2[0];
-        this.y = _generateTreatPositio2[1];
+        this.x = _getFreeCoord2[0];
+        this.y = _getFreeCoord2[1];
       }
     }
   }, {
@@ -9318,13 +9318,21 @@ var FPS = exports.FPS = 15;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var isColliding = function isColliding(a, b) {
   return a.x === b.x && a.y === b.y;
 };
 
-var generateTreatPositions = function generateTreatPositions(tiles) {
-  return Array.from({ length: 2 }).map(function () {
-    return Math.floor(Math.random() * tiles);
+var getFreeCoord = function getFreeCoord(trail, tileCount) {
+  return ['x', 'y'].map(function (coord) {
+    var freeTiles = [].concat(_toConsumableArray(Array(tileCount).keys())).filter(function (tile) {
+      return !trail.some(function (square) {
+        return square[coord] === tile;
+      });
+    });
+    return freeTiles[Math.floor(Math.random() * freeTiles.length)];
   });
 };
 
@@ -9335,7 +9343,7 @@ var checkBounderies = function checkBounderies(directions, edge) {
 };
 
 exports.isColliding = isColliding;
-exports.generateTreatPositions = generateTreatPositions;
+exports.getFreeCoord = getFreeCoord;
 exports.checkBounderies = checkBounderies;
 
 /***/ })
