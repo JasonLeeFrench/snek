@@ -1,13 +1,13 @@
 import { GRID_SIZE, DRAW_AREA, TILE_COUNT, TREAT_COLOR } from './config'
-import { generateTreatPositions } from './utils'
+import { getFreeCoord } from './utils'
 
 class Treat {
   constructor (opts) {
     Object.assign(this, opts)
   }
-  update (isHit) {
+  update (isHit, player) {
     if(isHit) {
-      [ this.x, this.y ] = generateTreatPositions(TILE_COUNT) // new snack!
+      [ this.x, this.y ] = getFreeCoord(player.trail, TILE_COUNT) // new snack!
     }
   }
   draw (ctx) {

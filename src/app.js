@@ -3,7 +3,7 @@ import Treat from './Treat'
 import Game from './Game'
 
 import { TILE_COUNT } from './config'
-import { generateTreatPositions } from './utils'
+import { getFreeCoord } from './utils'
 
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
@@ -13,7 +13,7 @@ const player = new Player({
   x: 10, y: 10
 })
 
-const [ treatX, treatY ] = generateTreatPositions(TILE_COUNT)
+const [ treatX, treatY ] = getFreeCoord(player.trail, TILE_COUNT)
 const treat = new Treat({
   ctx, x: treatX, y: treatY
 })

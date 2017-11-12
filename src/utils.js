@@ -1,10 +1,13 @@
 const isColliding = (a, b) => a.x === b.x && a.y === b.y
 
-const generateTreatPositions = tiles => Array.from({ length: 2 })
-  .map(() => Math.floor(Math.random() * tiles))
+const getFreeCoord = (trail, tileCount) => ['x', 'y'].map((coord) => {
+  const freeTiles = [...Array(tileCount).keys()]
+    .filter(tile => !trail.some(square => square[coord] === tile))
+    return freeTiles[Math.floor(Math.random() * freeTiles.length)]
+})
 
 const checkBounderies = (directions, edge) => directions.map(direction =>
   direction = direction < 0 ? edge : direction > edge ? 0 : direction
 )
 
-export { isColliding, generateTreatPositions, checkBounderies } 
+export { isColliding, getFreeCoord, checkBounderies } 

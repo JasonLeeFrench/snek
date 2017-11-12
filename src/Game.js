@@ -1,4 +1,4 @@
-import { CANVAS_COLOR, FPS } from './config'
+import { CANVAS_COLOR, TILE_COUNT, FPS } from './config'
 import { isColliding } from './utils'
 
 class Game {
@@ -14,7 +14,7 @@ class Game {
   update () {
     const [ player, treat ] = this.elements
     const colliding = isColliding(player, treat)
-    return this.elements.map(element => element.update(colliding))
+    return this.elements.map(element => element.update(colliding, player))
   }
   draw () {
     const { width, height } = this.ctx.canvas
