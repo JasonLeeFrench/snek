@@ -1848,6 +1848,7 @@ Object.defineProperty(exports, "__esModule", {
 var CANVAS_COLOR = exports.CANVAS_COLOR = '#34495e';
 var SNAKE_COLOR = exports.SNAKE_COLOR = '#2ecc71';
 var TREAT_COLOR = exports.TREAT_COLOR = '#c0392b';
+var TEXT_STYLE = exports.TEXT_STYLE = { color: '#fff', font: '30px Arial' };
 
 var KEYS = exports.KEYS = {
   37: { x: -1, y: 0 },
@@ -1859,6 +1860,8 @@ var KEYS = exports.KEYS = {
 var TILE_COUNT = exports.TILE_COUNT = 20;
 var GRID_SIZE = exports.GRID_SIZE = 20;
 var DRAW_AREA = exports.DRAW_AREA = GRID_SIZE - 2;
+
+var TEXT_POSITION = exports.TEXT_POSITION = [10, 30];
 
 var FPS = exports.FPS = 15;
 
@@ -9125,7 +9128,8 @@ var ctx = canvas.getContext('2d');
 
 var player = new _Player2.default({
   ctx: ctx, velocity: { x: 0, y: 0 },
-  x: 10, y: 10
+  x: 10, y: 10,
+  score: 0
 });
 
 var _getFreeCoord = (0, _utils.getFreeCoord)(player.trail, _config.TILE_COUNT),
@@ -9205,6 +9209,7 @@ var Player = function () {
       if (touching) {
         // boo, reset
         this.tail = 5;
+        this.score = 0;
       }
       this.trail.push({ x: this.x, y: this.y });
       while (this.trail.length > this.tail) {
@@ -9302,6 +9307,8 @@ var _config = __webpack_require__(63);
 
 var _utils = __webpack_require__(64);
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Game = function () {
@@ -9319,6 +9326,7 @@ var Game = function () {
       var timeout = 1000 / _config.FPS;
       var update = this.update();
       var draw = this.draw();
+      var text = this.drawScore(this.elements[0]);
       return setTimeout(function () {
         return requestAnimationFrame(function () {
           return _this.tick();
@@ -9333,6 +9341,9 @@ var Game = function () {
           treat = _elements[1];
 
       var colliding = (0, _utils.isColliding)(player, treat);
+      if (colliding) {
+        player.score += 10;
+      }
       return this.elements.map(function (element) {
         return element.update(colliding, player);
       });
@@ -9351,6 +9362,15 @@ var Game = function () {
       return this.elements.map(function (element) {
         return element.draw(_this2.ctx);
       });
+    }
+  }, {
+    key: 'drawScore',
+    value: function drawScore(player) {
+      var _ctx;
+
+      this.ctx.font = _config.TEXT_STYLE.font;
+      this.ctx.fillStyle = _config.TEXT_STYLE.color;
+      return (_ctx = this.ctx).fillText.apply(_ctx, [player.score].concat(_toConsumableArray(_config.TEXT_POSITION)));
     }
   }]);
 
