@@ -10,7 +10,8 @@ const ctx = canvas.getContext('2d')
 
 const player = new Player({
   ctx, velocity: { x: 0, y: 0 },
-  x: 10, y: 10
+  x: 10, y: 10,
+  score: 0
 })
 
 const [ treatX, treatY ] = getFreeCoord(player.trail, TILE_COUNT)

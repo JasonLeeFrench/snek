@@ -20,6 +20,7 @@ class Player {
     const touching = this.trail.some(bit => isColliding(bit, this))
     if(touching) { // boo, reset
       this.tail = 5
+      this.score = 0
     }
     this.trail.push({ x: this.x, y: this.y })
     while (this.trail.length > this.tail) { this.trail.shift() }
