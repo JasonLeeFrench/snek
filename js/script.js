@@ -9147,7 +9147,10 @@ var game = new _Game2.default({ elements: elements, ctx: ctx });
 game.tick();
 
 window.onkeydown = function (e) {
-  return player.keyPush(e);
+  var key = _config.KEYS[e.keyCode];
+  if (key) {
+    player.velocity = player.updateVelocity(key);
+  }
 };
 
 /***/ }),
@@ -9180,10 +9183,11 @@ var Player = function () {
   }
 
   _createClass(Player, [{
-    key: 'keyPush',
-    value: function keyPush(event) {
+    key: 'updateVelocity',
+    value: function updateVelocity(key) {
       var prevVelocity = this.velocity;
-      this.velocity = _config.KEYS[event.keyCode] || prevVelocity;
+      var isOpposite = key.x * -1 === prevVelocity.x && key.y * -1 === prevVelocity.y;
+      return isOpposite ? prevVelocity : key;
     }
   }, {
     key: 'update',
