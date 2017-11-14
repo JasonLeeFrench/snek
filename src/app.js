@@ -2,7 +2,7 @@ import Player from './Player'
 import Treat from './Treat'
 import Game from './Game'
 
-import { TILE_COUNT } from './config'
+import { TILE_COUNT, KEYS } from './config'
 import { getFreeCoord } from './utils'
 
 const canvas = document.querySelector('canvas')
@@ -24,4 +24,9 @@ const elements = [ player, treat ]
 const game = new Game({ elements, ctx })
 game.tick()
 
-window.onkeydown = e => player.keyPush(e)
+window.onkeydown = e => {
+  const key = KEYS[e.keyCode]
+  if(key) {
+    player.velocity = player.updateVelocity(key)
+  }
+}

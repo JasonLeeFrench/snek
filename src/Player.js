@@ -1,4 +1,4 @@
-import { KEYS, TILE_COUNT, GRID_SIZE, DRAW_AREA, SNAKE_COLOR } from './config'
+import { TILE_COUNT, GRID_SIZE, DRAW_AREA, SNAKE_COLOR } from './config'
 import { isColliding, checkBounderies } from './utils'
 
 class Player {
@@ -6,9 +6,11 @@ class Player {
     Object.assign(this, opts)
     this.trail = []
   }
-  keyPush (event) {
+  updateVelocity (key) {
     const prevVelocity = this.velocity
-    this.velocity = KEYS[event.keyCode] || prevVelocity
+    const isOpposite = key.x * -1 === prevVelocity.x &&
+      key.y * -1 === prevVelocity.y
+    return isOpposite ? prevVelocity : key
   }
   update (hitTreat) {
     this.x += this.velocity.x
